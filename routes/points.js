@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var spots = require('../collections/points.js');
 
 var example={ "type" : "FeatureCollection",
 	"features":[
@@ -19,8 +20,14 @@ var example={ "type" : "FeatureCollection",
 };
 
 /* GET home page. */
+//This will return a list of points (xample json from above)within a given a rectangle (N,S,E,W) 
 router.get('/points', function(req, res, next) {
   res.json(example);
+});
+
+//Post a single point with up/down vote
+router.post('/points', function(req, res, next) {
+    
 });
 
 module.exports = router;

@@ -10,8 +10,18 @@ var routes = require('./routes/points.js');
 
 var app = express();
 
-var mongouser = "api";
-var mongopw = "ChristmasLightsAreTheBomb";
+// connect to the database
+//need to deal with prod vs dev shit
+///var mongouser = "api";
+//var mongopw = "ChristmasLightsAreTheBomb";
+/******************************************/
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/spots');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback(){
+   console.log('Connected to Mongo'); 
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
