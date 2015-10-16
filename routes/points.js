@@ -11,6 +11,10 @@ router.get('/points', function(req, res, next) {
 });
 
 //Post a single point with up/down vote
+//lat : latitude
+//long : longitude
+//vote : up or down
+//id : uniqid for de
 router.post('/points', function(req, res, next) {
     
 });

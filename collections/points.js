@@ -11,14 +11,6 @@ var model = mongoose.model('point', schema);
 exports.schema = schema;
 exports.model = model;
 
-//var point = {geometry: 
-//             {type: 'Point',
-//                coordinates: [-105.01621,39.57422]
-//             }};
-//model.create(point).then(function(pnt){
-//    console.log('added:'+pnt);
-//});
-
 var example={ "type" : "FeatureCollection",
 	"features":[
 		{ "type" : "Feature",
@@ -45,10 +37,28 @@ exports.getPoints = function(data, callback){
     }
 }
 
+//************************************************************************************************************
+// function     : points.addPoint
+// arguments    : data {"lon", "lat"}
+//                callback function (error, boolean)
+//************************************************************************************************************
 exports.addPoint = function(data, callback){
-    console.log('start addPoint');   
-    if (data){
-        callback(undefined, example);   
+    console.log('start addPoint');  
+    var point =   {geometry: {
+                    type: 'Point',
+                    coordinates: [0,0]
+                }};    
+    if (data && data.lat && data.lon){
+        point.geometry.coordinates = [data.lon, data.lat];
+        model.create(point, function(err, data){
+            if (err){
+                console.log('failed to add:'+point);
+                callback({error:err}, undefined);
+            } else {
+                console.log('added:'+point);
+                callback(undefined, true);
+            }
+        });
     } else {
         callback({error:'need some data dude'}, undefined);   
     }
