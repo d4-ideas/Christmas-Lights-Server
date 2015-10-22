@@ -8,8 +8,11 @@ before(function(done){
 describe('pointsCollection', function() {
     describe('addPoint', function() {
         it('should add the point', function(done){   
-            pointsC.addPoint({lon:-105.01621, lat:39.57422}, function(err, data){
+            var point = {coordinates: [-105.01621,39.57422],
+                        device:{type:'Android', id:'123'}}
+            pointsC.addPoint(point, function(err, data){
                 try{
+                    console.log(err);
                     expect(err).to.be.undefined;
                     expect(data).to.be.ok;
                     done();

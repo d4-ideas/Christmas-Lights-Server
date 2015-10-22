@@ -3,7 +3,7 @@ console.log('loading points collection');
 
 var schema = new mongoose.Schema({
     createdOn: { type: Date, default: Date.now },
-    //createdByDevice: {type: mongoose.Schema.Types.ObjectId, ref: 'user'}, 
+    createdByDevice: { type: {type: String}, id: {type:String}},
     geometry: { type: { type: String, default:'Point' }, coordinates: [Number] }
 });
 
@@ -39,17 +39,24 @@ exports.getPoints = function(data, callback){
 
 //************************************************************************************************************
 // function     : points.addPoint
-// arguments    : data {"lon", "lat"}
+// arguments    : data {coordinates: [lon,lat],
+//                        device:{type, id}}
 //                callback function (error, boolean)
 //************************************************************************************************************
 exports.addPoint = function(data, callback){
     console.log('start addPoint');  
     var point =   {geometry: {
                     type: 'Point',
-                    coordinates: [0,0]
-                }};    
-    if (data && data.lat && data.lon){
-        point.geometry.coordinates = [data.lon, data.lat];
+                    coordinates: [0,0]},
+                   createdByDevice: {
+                    type: '',
+                    id: ''}
+                  };    
+    if (data && data.coordinates && data.device && data.device.type && data.device.id){
+        point.geometry.coordinates = data.coordinates;
+        point.createdByDevice.type = data.device.type;
+        point.createdByDevice.id = data.device.id;
+
         model.create(point, function(err, data){
             if (err){
                 console.log('failed to add:'+point);
