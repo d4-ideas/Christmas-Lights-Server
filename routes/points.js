@@ -3,7 +3,23 @@ var router = express.Router();
 var points = require('../collections/points.js');
 
 /* GET home page. */
-//This will return a list of points (xample json from above)within a given a rectangle (N,S,E,W) 
+//This will return a list of points (example json below)within a given a rectangle (N,S,E,W) 
+//var example={ "type" : "FeatureCollection",
+//	"features":[
+//		{ "type" : "Feature",
+//		  "geometry" : { "type" : "Point", "coordinates" : [-77.2844568, 38.80313116]},
+//		  "properties": {"votes" : 100.0}
+//		},
+//		{ "type" : "Feature",
+//		  "geometry" : { "type" : "Point", "coordinates" : [-77.2834568, 38.80323116]},
+//		  "properties": {"votes" : 60.0}
+//		},
+//		{ "type" : "Feature",
+//		  "geometry" : { "type" : "Point", "coordinates" : [-77.2843578, 38.80312126]},
+//		  "properties": {"votes" : 30.0}
+//		}
+//	]
+//};
 router.get('/points', function(req, res, next) {
     points.getPoints(undefined, function(err, data){  
           res.json(data);
