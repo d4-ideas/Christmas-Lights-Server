@@ -13,11 +13,21 @@ var model = mongoose.model('point', schema);
 exports.schema = schema;
 exports.model = model;
 
+//************************************************************************************************************
+// function     : points.getPoints
+// arguments    : data  {
+//                            "geometry": {
+//                            "type": "Polygon",
+//                            "coordinates": [[ series of points/corrdinates forming a polygon begining and ending with the same point ]]
+//                            }
+//                        }
+//                callback function (error, [points])
+//************************************************************************************************************
 exports.getPoints = function(data, callback){
-    console.log('start getPoints');   
-    if (data){
-        model.find({}).
-        select({"geometry":1}).
+    console.log('start getPoints Collection');   
+    console.log(data);
+    if (data && data.geometry){
+        model.find({'geometry': { $geoWithin: { $geometry: data.geometry } } }).
         exec(function(err, points){
             callback(undefined, points);   
         });

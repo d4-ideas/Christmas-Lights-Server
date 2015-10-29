@@ -20,10 +20,39 @@ var points = require('../collections/points.js');
 //		}
 //	]
 //};
+//************************************************************************************************************
+// function     : get
+// arguments    : data  {
+//                            "geometry": {
+//                            "type": "Polygon",
+//                            "coordinates": [[ series of points/coordinates forming a polygon beginning and ending with the same point ]]
+//                            }
+//                        }
+//                callback function (error, [points])
+//************************************************************************************************************
 router.get('/points', function(req, res, next) {
-    points.getPoints(undefined, function(err, data){  
-          res.json(data);
-    });
+    console.log(req.query.view);
+    if (req.query.view){
+        var polygon = JSON.parse(req.query.view);
+        points.getPoints(polygon, function(err, data){
+            if (err) {
+                console.log(err);
+                res.json({"error": err});
+            } else {
+                var features = data.map(function(curr){
+                                            var feature = {"type": 'Feature',
+                                                           "geometry": curr.geometry,
+                                                           "properties": {"votes": 1}
+                                                          }
+                                            return feature;
+                                        });
+                    
+                res.json({"type": 'FeatureCollection', "features": features});
+            }
+        });
+    } else {
+        res.json({"errror": 'no geometry supplied'});
+    }
 });
 
 //Post a single point with up/down vote
