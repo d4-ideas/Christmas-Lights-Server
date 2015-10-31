@@ -23,14 +23,15 @@ var points = require('../collections/points.js');
 //************************************************************************************************************
 // function     : get
 // arguments    : data  {
-//                            "geometry": {
-//                            "type": "Polygon",
-//                            "coordinates": [[ series of points/coordinates forming a polygon beginning and ending with the same point ]]
-//                            }
-//                        }
+//                          "geometry": {
+//                              "type": "Polygon",
+//                              "coordinates": [[ series of points/coordinates forming a polygon beginning and ending with the same point ]]
+//                          }
+//                      },
 //                callback function (error, [points])
 //************************************************************************************************************
 router.get('/points', function(req, res, next) {
+    console.log("view: ");
     console.log(req.query.view);
     if (req.query.view){
         var polygon = JSON.parse(req.query.view);
@@ -57,14 +58,15 @@ router.get('/points', function(req, res, next) {
 
 //Post a single point with up/down vote
 //lat : latitude
-//long : longitude
+//lon : longitude
 //vote : up or down
-//id : uniqid for de
+//id : uniqid for device
+//type : android or iOS
 
 router.post('/points', function(req, res, next) {
     console.log('start post to /points');
     var point = {coordinates: [parseFloat(req.body.lon),parseFloat(req.body.lat)],
-                device:{type: req.body.device.type, id: req.body.device.id}}
+                device:{type: req.body.type, id: req.body.id}}
 
     points.addPoint(point, function(err, data){
         if (err){
