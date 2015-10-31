@@ -32,9 +32,19 @@ var points = require('../collections/points.js');
 //************************************************************************************************************
 router.get('/points', function(req, res, next) {
     console.log("view: ");
-    console.log(req.query.view);
-    if (req.query.view){
-        var polygon = JSON.parse(req.query.view);
+    console.log(req.query.p);
+    if (req.query.p){
+        var coor = req.query.p.map(function(curr){
+                                       return  curr.map(function(curr){
+                                            return parseFloat(curr);    
+                                       });
+                                    });
+        var polygon = {"geometry": {
+                            "type": "Polygon",
+                            "coordinates": [coor]
+                        }
+                      };
+        console.log(polygon);
         points.getPoints(polygon, function(err, data){
             if (err) {
                 console.log(err);
